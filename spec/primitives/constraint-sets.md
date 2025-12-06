@@ -4,148 +4,147 @@
 **Maintainer:** Symbia Labs  
 
 Constraint Sets define the permissible actions, transformations, capabilities,
-and behaviors of an identity within GKS. They are the primary mechanism for
-governing agent behavior and ensuring durable, interpretable, safe cognition.
-
-Constraint Sets do not weaken or override the Open Epistemic Protocol (OEP).  
-Instead, they provide an additional, orthogonal layer of behavioral governance.
+and behaviors of an identity within GKS. They function as the primary behavioral
+governance layer for durable, interpretable cognition. Constraint Sets do not
+replace or weaken the Open Epistemic Protocol (OEP); they complement it.
 
 ---
 
 # 1. Purpose
 
-Constraint Sets establish:
+Constraint Sets specify:
 
-- what an identity is allowed to do  
-- which transformations are permitted  
-- what operations require entitlement  
-- which actions must be denied  
-- boundaries on continuity hydration  
-- allowable pipeline transitions  
-- required metadata for outputs  
+- which actions are permitted  
+- which actions are forbidden  
+- which transformations of output are allowed  
+- what metadata must accompany outputs  
+- which continuity operations are allowed  
+- boundaries on state hydration  
 - escalation rules for violations  
 
-They ensure reasoning does not become arbitrary, unbounded, or inconsistent across episodes.
+They ensure that behavior remains controlled, deterministic, and compliant,
+regardless of model output.
 
 ---
 
 # 2. Principles
 
 ## 2.1 Constraint-Supremacy  
-Constraints supersede model output. If a model proposes output that violates a
-constraint, the Actor must block or transform it.
+If a model proposes an action or output that violates a constraint, the system
+must block or transform it. Constraints override generated content.
 
 ## 2.2 Deterministic Enforcement  
-Constraint evaluation must be deterministic and reproducible.
+All constraint evaluation must be reproducible and deterministic.
 
 ## 2.3 Identity-Scoped  
-Constraints are bound to identities via entitlements.
+Constraint Sets are bound to identities via entitlements, not to the model.
 
 ## 2.4 Orthogonal to OEP  
-Constraint Sets govern behavior; OEP governs epistemic structure.
+OEP governs epistemic claims; Constraint Sets govern behavior.
 
-## 2.5 Evolving but Versioned  
-Constraints may evolve, but versions must remain immutable for lineage.
+## 2.5 Versioned and Immutable  
+Once published, Constraint Set versions must remain immutable for lineage and
+continuity integrity.
 
 ---
 
 # 3. Constraint Set Structure
 
-A Constraint Set contains:
+A Constraint Set includes:
 
-- **id** — unique identifier  
-- **version** — semantic version  
-- **description** — summary  
-- **allowed_actions** — explicitly permitted operations  
-- **denied_actions** — explicitly forbidden operations  
-- **transformations** — allowed structural rewrites  
-- **continuity_rules** — constraints on state persistence and hydration  
-- **metadata_requirements** — mandatory fields for outputs  
-- **escalation** — required behavior on violation  
-- **dependencies** — references to other Constraint Sets  
+- id  
+- version  
+- description  
+- allowed_actions  
+- denied_actions  
+- transformations  
+- continuity_rules  
+- metadata_requirements  
+- escalation behavior  
+- dependencies (optional)  
 
 ### Example (safe literal block):
 
     id: "constraint-set:core-v1"
-    version: 1.0.0
+    version: "1.0.0"
     description: "Baseline behavioral and structural constraints for GKS agents."
 
     allowed_actions:
-      - "reason"
-      - "evaluate-claim"
-      - "apply-constraint"
-      - "generate-output"
+      - reason
+      - evaluate-claim
+      - apply-constraint
+      - generate-output
 
     denied_actions:
-      - "fabricate-identity"
-      - "bypass-lineage"
-      - "access-private-state"
-      - "modify-constraints"
+      - fabricate-identity
+      - bypass-lineage
+      - access-private-state
+      - modify-constraints
 
     transformations:
-      - "rewrite-output-for-compliance"
-      - "attach-required-metadata"
+      - rewrite-output-for-compliance
+      - attach-required-metadata
 
     continuity_rules:
-      - "no-raw-history"
-      - "no-user-private-data"
-      - "hydration-requires-entitlement"
+      - no-raw-history
+      - no-user-private-data
+      - hydration-requires-entitlement
 
     metadata_requirements:
-      - "lineage_event"
-      - "identity_context"
-      - "continuity_reference"
-      - "oep_epistemic_metadata"
+      - lineage_event
+      - identity_context
+      - continuity_reference
+      - oep_epistemic_metadata
 
     escalation:
-      on_violation: "block_and_log"
+      on_violation: block_and_log
 
     dependencies:
-      - "constraint-set:oep-enforcement-v1"
+      - constraint-set:oep-enforcement-v1
 
 ---
 
-# 4. Allowed vs Forbidden Constraints
+# 4. Allowed vs Forbidden Constraint Content
 
 ## 4.1 Allowed  
-Constraint Sets may:
+Constraints may:
 
-- restrict identity capabilities  
+- restrict behavior  
+- require lineage entries for specific actions  
+- define allowed transformations of output  
+- govern what structured state may persist or hydrate  
+- define metadata requirements  
 - define system operation modes  
-- govern which state may persist or hydrate  
-- require specific metadata  
-- enforce safety, compliance, or governance rules  
-- define allowed transformations of model output  
-- specify lineage requirements  
-- define allowed data formats or schemas  
+- enforce compliance or safety policies  
 
 ## 4.2 Forbidden  
-Constraint Sets may **not**:
+Constraints may **not**:
 
-- override or weaken OEP  
-- grant awareness of unobserved context  
-- embed private or historical user information  
-- imply continuity of knowledge  
-- provide memory-like capabilities  
-- embed epistemic claims or narratives  
-- bypass lineage requirements  
-- directly encode agent state inside identity  
+- weaken or override OEP  
+- grant awareness of unobserved events  
+- embed historical user content  
+- encode unverifiable knowledge  
+- provide implicit memory  
+- bypass lineage or continuity rules  
+- alter or fabricate identity  
+
+Constraint Sets govern behavior, not knowledge.
 
 ---
 
 # 5. Entitlements
 
-Identities do not store capabilities.  
-Identities store **entitlements**, which reference one or more Constraint Sets.
+Identities do not store behavior.  
+Identities store *entitlements*, which reference Constraint Sets.
 
 This ensures:
 
 - revocability  
-- capability scoping  
-- multi-identity governance  
-- separation of identity and behavior  
+- minimal coupling  
+- fine-grained permission control  
+- multi-identity coexistence  
 
-Each entitlement change must produce a lineage event.
+Each entitlement modification is recorded in lineage.
 
 ---
 
@@ -153,50 +152,49 @@ Each entitlement change must produce a lineage event.
 
 Constraint evaluation occurs in the **Processor** role.
 
-Order of operations:
+Execution order:
 
-1. Apply **OEP rules**  
+1. Apply OEP rules  
 2. Apply Constraint Sets  
-3. Reject or transform output  
-4. Attach lineage metadata  
-5. Forward to Actor for final rendering
+3. Block or transform violations  
+4. Attach required metadata  
+5. Forward to the Actor role for final rendering  
 
-If a violation cannot be remediated via allowed transformations:
+If a violation cannot be corrected via an allowed transformation, the system must:
 
-- the action must be blocked  
-- a violation event must be recorded  
-- the Actor may output a structured error  
+- block the action, and  
+- record the violation in lineage  
 
 ---
 
 # 7. Constraint Evolution
 
-Constraints evolve through:
+Constraint Sets evolve via:
 
 - new versions  
-- RFC proposals  
+- RFC processes  
 - dependency graph updates  
 
 Rules:
 
-- changes cannot weaken OEP alignment  
-- upstream Constraint Sets must remain stable  
-- lineage must reflect the version active during any decision  
-- continuity references must bind to specific constraint-set versions  
+- new versions must not weaken OEP alignment  
+- all versions must remain immutable once published  
+- lineage must reference specific versions  
+- continuity entries must reference constraint versions explicitly  
 
 ---
 
 # 8. Continuity + Constraint Interaction
 
-Constraint Sets define how continuity operates:
+Constraint Sets define:
 
-- what may persist  
-- what may hydrate  
-- which state references are allowed  
+- what state may persist across episodes  
+- what state may hydrate in new episodes  
 - which transitions require lineage  
-- what structural updates identities may undergo  
+- limits on continuity operations  
+- how identities may evolve over time  
 
-Constraint Sets ensure continuity remains structural and non-epistemic.
+Constraint Sets prevent continuity from collapsing into memory.
 
 ---
 
@@ -204,12 +202,12 @@ Constraint Sets ensure continuity remains structural and non-epistemic.
 
 A system is GKS-constraint-compliant if:
 
-1. All identities have valid entitlements  
+1. Every identity has valid entitlements  
 2. Constraint Sets follow the structure above  
-3. Constraint evaluation is deterministic  
-4. Violations block or transform output  
+3. Violations block or transform model output  
+4. Constraint evaluation is deterministic  
 5. OEP enforcement always precedes constraint enforcement  
-6. Constraint changes produce lineage events  
+6. All constraint changes generate lineage events  
 7. Constraint Sets are versioned and immutable  
 8. No constraint introduces epistemic violations  
 
@@ -217,7 +215,7 @@ A system is GKS-constraint-compliant if:
 
 # 10. Summary
 
-Constraint Sets are the **behavioral governance layer** of GKS:
+Constraint Sets are the **behavioral spine** of GKS:
 
 - identity-scoped  
 - deterministic  
@@ -226,10 +224,10 @@ Constraint Sets are the **behavioral governance layer** of GKS:
 - lineage-integrated  
 - non-epistemic  
 
-They govern **how** an agent may act, never **what** it may claim.  
-OEP governs epistemics; Constraint Sets govern behavior.
+They govern **how an agent may act**, never **what it may claim**.  
+OEP governs epistemic boundaries; Constraint Sets govern behavior.
 
-Together, they define a safe and durable framework for machine cognition.
+Together, they form the dual-governance system required for durable machine cognition.
 
 ---
 
